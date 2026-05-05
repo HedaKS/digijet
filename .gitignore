@@ -1,0 +1,18 @@
+# VS Code / config locale
+.vscode/
+.DS_Store
+
+# Secrets / variables d'environnement
+.env
+.env.*
+*.local
+
+# Logs / temporaires
+*.log
+logs/
+*.tmp
+*.bak
+*.swp
+
+# Dépendances PHP
+/vendor/

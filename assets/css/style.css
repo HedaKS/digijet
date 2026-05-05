@@ -1,0 +1,955 @@
+
+/* --- VARIABLES & RESET --- */
+:root {
+  /* --- PALETTE DE COULEURS --- */
+  
+  /* Textes & Titres */
+  --primary-color: #0f172a; /* Bleu Nuit très sombre (Titres) */
+  --primary-light: #475569; /* Gris soutenu (Sous-titres) */
+  --text-color: #334155;    /* Gris texte courant */
+  --text-light: #64748b;    /* Gris clair (petits textes) */
+
+  /* Accents */
+  --accent-color: #2563eb;  /* Bleu Royal vibrant */
+  --gold-color: #d97706;    /* Or ambré (plus visible sur fond gris) */
+
+  /* --- ARRIÈRE-PLANS (C'est ici que tout change) --- */
+  
+  /* 1. Fond global du site (Body) : Gris-Bleu très pâle (fini le blanc pur) */
+  --bg-body: #f1f5f9; 
+  
+  /* 2. Fond des sections alternées (.bg-light) : Gris Pierre plus soutenu */
+  --bg-section-alt: #e2e8f0; 
+  
+  /* 3. Fond des cartes : Blanc Pur (pour le contraste) */
+  --bg-card: #ffffff;
+  
+  /* 4. Dégradé Hero : Du blanc vers le gris du body */
+  --bg-hero: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+  
+  /* 5. Dégradé sombre (Boutons / Footer / CTA) */
+  --bg-dark: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+
+  /* --- OMBRES & BORDURES --- */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  /* Bordure subtile pour délimiter les blocs sur les fonds gris */
+  --border-subtle: 1px solid rgba(255,255,255,0.5);
+
+  --radius: 12px;
+  --font-heading: "Poppins", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-color);
+  /* CHANGEMENT MAJEUR : Fond global teinté */
+  background-color: var(--bg-body);
+  line-height: 1.7;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  color: var(--primary-color);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* --- SECTIONS --- */
+section {
+  padding: 100px 0;
+  position: relative;
+  /* Bordure très légère en bas pour séparer si deux couleurs sont proches */
+  border-bottom: 1px solid rgba(0,0,0,0.03); 
+}
+
+/* Classe pour alterner les fonds (Services, Tarifs, Réalisations) */
+.bg-light {
+  /* CHANGEMENT MAJEUR : Fond plus sombre pour créer des bandes */
+  background-color: var(--bg-section-alt);
+  border-top: 1px solid rgba(255,255,255,0.5);
+  border-bottom: 1px solid rgba(255,255,255,0.5);
+}
+
+/* --- CAROUSEL REALISATIONS (Spécifique) --- */
+
+.cardRealisation{
+    max-width: 400px; 
+    max-height:250px; 
+    margin-bottom: 20px; 
+    border-radius: 8px;
+}
+
+/* On s'assure que la carte prend toute la hauteur du slide pour l'alignement */
+.realisation-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pousse le lien vers le bas */
+}
+
+/* Optionnel : Si tu veux un fond différent pour cette section comme pour services */
+.realisation-carousel-section {
+    background-color: var(--bg-section-alt); 
+    /* Ou un autre dégradé si tu veux varier */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* --- ANIMATIONS (Inchangées) --- */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- BOUTONS --- */
+.btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 35px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary {
+  background: var(--bg-dark);
+  color: white;
+  box-shadow: 0 4px 6px rgba(15, 23, 42, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 15px rgba(15, 23, 42, 0.4);
+  background: var(--accent-color);
+}
+
+.btn-secondary {
+  /* Fond transparent mais bordure visible */
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.btn-secondary:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.section-title {
+  margin-bottom: 60px;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.section-title h2 {
+  font-size: 2.8rem;
+  margin-bottom: 15px;
+}
+
+.section-title::after {
+  content: "";
+  display: block;
+  width: 70px;
+  height: 4px;
+  background: var(--gold-color);
+  margin: 20px auto 0;
+  border-radius: 4px;
+}
+
+/* --- HEADER --- */
+header {
+  /* Fond blanc cassé semi-transparent pour se détacher du body gris */
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+header.scrolled {
+  padding: 5px 0;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: var(--shadow-sm);
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 90px;
+  transition: height 0.3s ease;
+}
+
+header.scrolled .navbar {
+  height: 70px;
+}
+
+.footer-col .logo img {
+    max-height: 120px!important;
+}
+
+.logo img {
+  max-height: 80px;
+  transition: transform 0.3s;
+}
+.logo:hover img {
+  transform: scale(1.05);
+}
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+}
+
+.nav-links a {
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--primary-color);
+  position: relative;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -5px;
+  left: 0;
+  background-color: var(--accent-color);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  width: 100%;
+}
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--accent-color);
+}
+
+.social-icons a {
+  margin-left: 20px;
+  color: var(--primary-color);
+  font-size: 1.3rem;
+  transition: 0.3s;
+}
+.social-icons a:hover {
+  color: var(--accent-color);
+  transform: translateY(-3px);
+}
+
+.burger {
+  display: none;
+  cursor: pointer;
+  font-size: 1.8rem;
+  color: var(--primary-color);
+}
+
+/* --- HERO SECTION --- */
+.hero {
+  /* CHANGEMENT : Dégradé visible pour trancher avec le reste */
+  background: var(--bg-hero);
+  text-align: center;
+  padding: 160px 0 120px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 600px;
+  height: 600px;
+  /* Cercle bleu très pâle pour habiller le fond */
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.06) 0%, rgba(255, 255, 255, 0) 70%);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.hero .container {
+  position: relative;
+  z-index: 1;
+}
+
+.hero h1 {
+  font-size: clamp(3rem, 6vw, 5.5rem) !important;
+  margin-bottom: 20px;
+  line-height: 1.1;
+  color: var(--primary-color);
+}
+
+.hero p {
+  font-size: 1.3rem;
+  color: var(--text-light);
+  margin-bottom: 40px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-btns {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* --- GRILLES --- */
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 40px;
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 60px;
+}
+
+/* --- CARTES (Gros travail de contraste ici) --- */
+.card {
+  /* Fond BLANC PUR pour trancher avec le fond gris du site */
+  background: var(--bg-card);
+  padding: 40px 30px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  /* Bordure très fine pour effet "Premium" */
+  border: 1px solid rgba(255,255,255,0.6); 
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-hover);
+  border-color: rgba(37, 99, 235, 0.2);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--gold-color);
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+  transform-origin: bottom;
+}
+.card:hover::before {
+  transform: scaleY(1);
+}
+
+/* --- TARIFS --- */
+.pricing-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 0 0 30px 0;
+  box-shadow: var(--shadow-card);
+  /* Contraste avec le fond gris de la section tarifs */
+  border: 1px solid white; 
+  display: flex;
+  flex-direction: column;
+  transition: 0.4s;
+  overflow: hidden;
+  position: relative;
+}
+
+.pricing-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-hover);
+  z-index: 2; /* Passe au dessus */
+}
+
+.pricing-header {
+  text-align: center;
+  padding: 40px 20px;
+  /* Légère teinte grise dans le header de la carte */
+  background: #f8fafc;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.pricing-header h3 {
+  margin-bottom: 10px;
+  font-size: 1.4rem;
+}
+
+.price {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  margin: 10px 0;
+  position: relative;
+  display: inline-block;
+}
+
+.price::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--gold-color);
+  margin: 5px auto 0;
+}
+
+.features-list {
+  padding: 30px;
+  flex-grow: 1;
+  font-size: 0.95rem;
+}
+
+.features-list li {
+  margin-bottom: 12px;
+  padding-left: 25px;
+  color: var(--text-color);
+  position: relative;
+}
+
+.features-list li::before {
+  content: "✓";
+  color: var(--gold-color);
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+.cat-title {
+  font-weight: 700;
+  color: var(--accent-color);
+  margin-top: 20px;
+  margin-bottom: 8px;
+  display: block;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+.pricing-card .btn {
+  margin: 0 30px;
+}
+
+/* --- CONTACT --- */
+.contact-wrapper {
+  display: flex;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.contact-form {
+  flex: 2;
+  /* Le formulaire est blanc, posé sur le fond gris de la section */
+  background: white;
+  padding: 50px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+
+.contact-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.form-group label {
+  color: var(--primary-color);
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.form-control {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-family: inherit;
+  /* Fond input très légèrement grisé pour délimiter la zone de saisie */
+  background-color: #f8fafc;
+  transition: 0.3s;
+  color: var(--primary-color);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  /* Devient blanc pur au focus */
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.info-box {
+  padding: 40px 30px;
+  border-radius: var(--radius);
+  text-align: center;
+  box-shadow: var(--shadow-card);
+  transition: 0.3s;
+  background: white;
+}
+
+.info-box:hover {
+  transform: translateY(-5px);
+}
+
+.info-box.dark {
+  background: var(--bg-dark);
+  color: white;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.info-box.dark h3 {
+    color: white !important;
+}
+
+/* --- FOOTER --- */
+footer {
+  /* Fond très sombre pour clore la page */
+  background-color: #0b0f19;
+  color: #94a3b8;
+  padding: 80px 0 30px;
+  margin-top: auto;
+  position: relative;
+  border-top: 3px solid white;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
+}
+
+.footer-col h4 {
+  color: white;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.footer-col p,
+.footer-col a {
+  color: #94a3b8;
+  transition: 0.3s;
+}
+
+.footer-col a:hover {
+  color: var(--gold-color);
+  padding-left: 5px;
+}
+
+.footer-socials {
+  gap: 15px;
+  display: flex;
+}
+
+.footer-socials a {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-socials a:hover {
+  background: var(--accent-color);
+  color: white;
+  transform: translateY(-3px) rotate(360deg);
+}
+
+
+@media (max-width: 750px) {
+    .footer-grid{
+        flex-direction: column!important;
+    }
+}
+
+
+
+.copyright {
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 50px;
+  padding-top: 25px;
+}
+
+/* --- MESSAGES D'ALERTE --- */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+.alert-success {
+    background-color: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+.alert-error {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+
+
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+  .hero h1 {
+    font-size: 3.5rem !important;
+  }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 90px;
+    left: 0;
+    width: 100%;
+    background: white;
+    flex-direction: column;
+    padding: 40px;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  .nav-links.active {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+  }
+  .burger {
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .contact-wrapper {
+    flex-direction: column-reverse;
+  }
+  .hero {
+    padding: 120px 0 80px;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+
+
+
+
+
+/* --- CAROUSEL SERVICES (Nouveau Style) --- */
+
+.services-carousel-section {
+    /* Un fond légèrement différent pour distinguer de la grille suivante */
+    background: linear-gradient(180deg, var(--bg-section-alt) 0%, #dbeafe 100%); 
+    overflow: hidden;
+}
+
+.carousel-wrapper {
+    position: relative;
+    max-width: 1200px; /* Largeur contrôlée pour le slider */
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-track-container {
+    overflow: hidden;
+    width: 100%;
+    padding: 20px 5px; /* Espace pour l'ombre des cartes */
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.carousel-slide {
+    /* Par défaut (Mobile) : 1 slide visible */
+    min-width: 100%; 
+    box-sizing: border-box;
+    padding: 0 15px; /* Espace entre les slides */
+}
+
+/* Style spécifique des cartes dans le carousel pour effet Premium */
+.service-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: white;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08); /* Ombre plus douce et large */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(37, 99, 235, 0.15); /* Reflet bleu au survol */
+    border-color: var(--accent-color);
+}
+
+/* BOUTONS NAVIGATION (Flèches) */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    border: 1px solid rgba(0,0,0,0.05);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: var(--primary-color);
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-btn:hover {
+    background: var(--accent-color);
+    color: white;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.prev-btn { left: -60px; }
+.next-btn { right: -60px; }
+
+/* POINTS DE NAVIGATION */
+.carousel-nav {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    gap: 10px;
+}
+
+.carousel-indicator {
+    border: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.2);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.carousel-indicator.current-slide {
+    background: var(--accent-color);
+    transform: scale(1.2);
+}
+
+/* --- RESPONSIVE CAROUSEL --- */
+
+/* Tablette et + : 2 slides */
+@media (min-width: 700px) {
+    .carousel-slide {
+        min-width: 50%;
+    }
+}
+
+/* Desktop et + : 3 slides */
+@media (min-width: 1000px) {
+    .carousel-slide {
+        min-width: 33.333%;
+    }
+}
+
+/* Mobile : Cacher les flèches si elles débordent trop ou les rapprocher */
+@media (max-width: 1360px) {
+    .prev-btn, .next-btn {
+        display: none; /* On préfère le swipe ou les points sur mobile */
+    }
+    .carousel-wrapper {
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Ajoute ceci dans style.css */
+.div-portrait{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 380px;
+  height: 380px;
+  border-radius: 180px;
+  border: solid 1px black;
+  overflow: hidden;
+  padding-right: 5%;
+}
+
+.ryan-portrait {
+    max-width: none;
+    height: 100%;
+
+  /* Transition douce si on veut un effet au survol */
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.ryan-portrait:hover {
+  /* Au survol */
+
+  transform: scale(1.02);
+}
+
+@media (max-width: 740px) {
+    #divPropos{
+        flex-direction: column!important;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* --- RUBANS PROJETS (Ribbons) --- */
+
+.ribbon {
+  position: absolute;
+  top: 25px;            /* Distance du haut */
+  right: -50px;         /* Décalage vers la droite pour l'effet diagonal */
+  width: 170px;         /* Doit être assez large pour couvrir le coin */
+  transform: rotate(45deg); /* La rotation diagonale */
+  
+  text-align: center;
+  font-size: 0.55rem;
+  font-weight: 800;     /* Gras pour être lisible */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 8px 0;       /* Épaisseur du ruban */
+  z-index: 10;          /* Au-dessus de l'image */
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15); /* Ombre pour l'effet 3D */
+  pointer-events: none; /* Le clic passe au travers */
+  
+  /* Lissage du texte lors de la rotation */
+  -webkit-font-smoothing: antialiased; 
+}
+
+/* Style pour "Fictif" (Projets IA/Exemples) */
+.ribbon-fictif {
+  background-color: #e2e8f0; /* Gris clair */
+  color: #1e293b;            /* Texte gris foncé */
+  border: 1px solid #cbd5e1; /* Légère bordure pour la netteté */
+}
+
+/* Style pour "Réel" (Projets Clients) */
+.ribbon-reel {
+  background-color: #d1fae5; /* Vert doux */
+  color: #065f46;            /* Texte vert foncé */
+  border: 1px solid #a7f3d0;
+}

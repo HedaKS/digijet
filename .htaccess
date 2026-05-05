@@ -1,0 +1,12 @@
+RewriteEngine On
+
+# 1) Rediriger /index.php vers /
+RewriteCond %{THE_REQUEST} \s/+index\.php[\s?]
+RewriteRule ^index\.php$ / [R=301,L]
+
+# 2) Si l'URL demandée n'est pas un fichier ou dossier réel...
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# ...alors on essaie d'ajouter .php derrière
+RewriteRule ^([a-zA-Z0-9_-]+)/?$ $1.php [L]
